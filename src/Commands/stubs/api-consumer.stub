@@ -1,0 +1,13 @@
+<?php
+
+namespace DummyNamespace;
+
+use InteractiveClient\ApiConsumer\ApiConsumer;
+
+class DummyClass extends ApiConsumer
+{
+    protected function getEndpoint()
+    {
+        return config('api-consumers.DummyClass.apiBasePath');
+    }
+}
