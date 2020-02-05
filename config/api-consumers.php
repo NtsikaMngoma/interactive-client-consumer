@@ -3,8 +3,8 @@
 return [
 
     /*
-    'IEX' => [
-        'apiBasePath' => env('IEX_API_BASE_PATH', 'https://example.com'),
+    'CONSUMER' => [
+        'apiBasePath' => env('API_BASE_PATH', 'https://example.com'),
         'endpoints' => [
             'symbols' => "/symbols"
         ]
