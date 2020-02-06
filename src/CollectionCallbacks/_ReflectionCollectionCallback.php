@@ -2,8 +2,8 @@
 
 namespace InteractiveClient\ApiConsumer\CollectionCallbacks;
 
-use InteractiveClient\ApiConsumer\Support\BaseCollectionCallback;
 use Illuminate\Support\Collection;
+use InteractiveClient\ApiConsumer\Support\BaseCollectionCallback;
 
 class _ReflectionCollectionCallback extends BaseCollectionCallback
 {
@@ -26,6 +26,7 @@ class _ReflectionCollectionCallback extends BaseCollectionCallback
     public function setMethod($method)
     {
         $this->method = $method;
+
         return $this;
     }
 
@@ -34,12 +35,13 @@ class _ReflectionCollectionCallback extends BaseCollectionCallback
      * @return Collection
      * @throws \Exception
      */
-    function applyTo(Collection &$collection) : Collection
+    public function applyTo(Collection &$collection): Collection
     {
         $method = $this->method;
-        if (!method_exists($collection, $method)) {
+        if (! method_exists($collection, $method)) {
             throw new \Exception("Method {$method} does not exist.");
         }
-        return $collection->$method(... $this->args);
+
+        return $collection->$method(...$this->args);
     }
 }

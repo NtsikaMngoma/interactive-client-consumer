@@ -28,7 +28,6 @@ class ApiConsumerEndpointMakeCommand extends GeneratorCommand
      */
     protected $type = 'Endpoint';
 
-
     /**
      * Execute the console command.
      *
@@ -38,6 +37,7 @@ class ApiConsumerEndpointMakeCommand extends GeneratorCommand
     {
         if (empty($this->option('consumer'))) {
             $this->error("'consumer' option is required (-c)");
+
             return;
         }
 
@@ -45,10 +45,9 @@ class ApiConsumerEndpointMakeCommand extends GeneratorCommand
             return;
         }
 
-
         $this->callSilent('make:api-consumer-shape', [
             'name' => str_replace('Endpoint', 'Shape', $this->getNameInput()),
-            '-c' => $this->options('consumer')['consumer']
+            '-c' => $this->options('consumer')['consumer'],
         ]);
     }
 
@@ -70,9 +69,8 @@ class ApiConsumerEndpointMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\ApiConsumers\\' . $this->option('consumer') . '\Endpoints';
+        return $rootNamespace.'\ApiConsumers\\'.$this->option('consumer').'\Endpoints';
     }
-
 
     /**
      * Get the console command options.
@@ -96,7 +94,6 @@ class ApiConsumerEndpointMakeCommand extends GeneratorCommand
      */
     protected function getNameInput()
     {
-        return preg_replace('/Endpoint$/', '', trim($this->argument('name'))) . "Endpoint";
+        return preg_replace('/Endpoint$/', '', trim($this->argument('name'))).'Endpoint';
     }
-
 }

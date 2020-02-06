@@ -2,12 +2,10 @@
 
 namespace InteractiveClient\ApiConsumer\Support;
 
+use Illuminate\Support\Facades\Cache;
 use InteractiveClient\ApiConsumer\CollectionCallbacks\_ReflectionCollectionCallback;
 use InteractiveClient\ApiConsumer\Contracts\CollectionCallbackContract;
-use InteractiveClient\ApiConsumer\Support\ShapeResolver;
 use Zttp\Zttp;
-use Illuminate\Support\Facades\Cache;
-
 
 abstract class Endpoint
 {
@@ -23,7 +21,6 @@ abstract class Endpoint
     protected $shouldCache = false;
     protected $cacheDurationInMinutes = 5;
 
-
     /**
      * Endpoint constructor.
      * @param $basePath
@@ -31,7 +28,7 @@ abstract class Endpoint
      */
     public function __construct($basePath, ShapeResolver $shapeResolver)
     {
-        $this->basePath      = $basePath;
+        $this->basePath = $basePath;
         $this->shapeResolver = $shapeResolver;
     }
 
@@ -40,7 +37,7 @@ abstract class Endpoint
      */
     private function uri()
     {
-        return $this->basePath . "/" . ltrim($this->path, "/");
+        return $this->basePath.'/'.ltrim($this->path, '/');
     }
 
     /**
@@ -48,15 +45,15 @@ abstract class Endpoint
      */
     private function getCacheKey()
     {
-        $key = $this->method . "-" . $this->uri();
+        $key = $this->method.'-'.$this->uri();
 
-        if(!empty($this->options)) {
+        if (! empty($this->options)) {
             $value = $this->options;
             if (is_array($value)) {
                 $value = http_build_query($value, null, '&', PHP_QUERY_RFC3986);
             }
             if (is_string($value)) {
-                $key .= "-" . $value;
+                $key .= '-'.$value;
             }
         }
 
@@ -68,19 +65,18 @@ abstract class Endpoint
      */
     private function request()
     {
-
-        if (strtolower($this->method) == "get") {
-
+        if (strtolower($this->method) == 'get') {
             if ($this->shouldCache) {
                 return Cache::remember($this->getCacheKey(), $this->cacheDurationInMinutes, function () {
                     return Zttp::withHeaders($this->headers)->get($this->uri(), $this->options)->body();
                 });
             }
+
             return Zttp::withHeaders($this->headers)->get($this->uri(), $this->options)->body();
         }
 
         // TODO: other Methods
-        return "[]";
+        return '[]';
     }
 
     /**
@@ -97,7 +93,7 @@ abstract class Endpoint
      */
     final public function get()
     {
-        $this->method = "GET";
+        $this->method = 'GET';
 
         $collection = $this->shapeResolver->resolve($this->request());
 
@@ -126,21 +122,22 @@ abstract class Endpoint
      */
     public function __call($name, $arguments)
     {
-        $collectionCallback =  "\App\CollectionCallbacks\\" . ucfirst($name) . "CollectionCallback";
+        $collectionCallback = "\App\CollectionCallbacks\\".ucfirst($name).'CollectionCallback';
 
-        if (!class_exists($collectionCallback)) {
-            $collectionCallback =  "\InteractiveClient\ApiConsumer\CollectionCallbacks\\" . ucfirst($name) . "CollectionCallback";
+        if (! class_exists($collectionCallback)) {
+            $collectionCallback = "\InteractiveClient\ApiConsumer\CollectionCallbacks\\".ucfirst($name).'CollectionCallback';
         }
 
-        if (!class_exists($collectionCallback)) {
+        if (! class_exists($collectionCallback)) {
             $this->registerCollectionCallback(
-                (new _ReflectionCollectionCallback(... $arguments))->setMethod($name)
+                (new _ReflectionCollectionCallback(...$arguments))->setMethod($name)
             );
+
             return $this;
         }
 
-        $this->registerCollectionCallback(new $collectionCallback(... $arguments));
+        $this->registerCollectionCallback(new $collectionCallback(...$arguments));
+
         return $this;
     }
-
 }

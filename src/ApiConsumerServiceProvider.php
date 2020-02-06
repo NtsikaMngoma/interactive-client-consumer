@@ -2,11 +2,11 @@
 
 namespace InteractiveClient\ApiConsumer;
 
+use Illuminate\Support\ServiceProvider;
 use InteractiveClient\ApiConsumer\Commands\ApiConsumerEndpointMakeCommand;
 use InteractiveClient\ApiConsumer\Commands\ApiConsumerMakeCollectionCallback;
 use InteractiveClient\ApiConsumer\Commands\ApiConsumerMakeCommand;
 use InteractiveClient\ApiConsumer\Commands\ApiConsumerShapeMakeCommand;
-use Illuminate\Support\ServiceProvider;
 
 class ApiConsumerServiceProvider extends ServiceProvider
 {
@@ -24,7 +24,7 @@ class ApiConsumerServiceProvider extends ServiceProvider
                 ApiConsumerMakeCommand::class,
                 ApiConsumerEndpointMakeCommand::class,
                 ApiConsumerShapeMakeCommand::class,
-                ApiConsumerMakeCollectionCallback::class
+                ApiConsumerMakeCollectionCallback::class,
             ]);
         }
     }

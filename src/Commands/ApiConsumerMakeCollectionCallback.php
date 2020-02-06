@@ -28,7 +28,6 @@ class ApiConsumerMakeCollectionCallback extends GeneratorCommand
      */
     protected $type = 'CollectionCallback';
 
-
     /**
      * Execute the console command.
      *
@@ -81,7 +80,6 @@ class ApiConsumerMakeCollectionCallback extends GeneratorCommand
      */
     protected function getNameInput()
     {
-        return preg_replace('/CollectionCallback$/', '', trim($this->argument('name'))) . "CollectionCallback";
+        return preg_replace('/CollectionCallback$/', '', trim($this->argument('name'))).'CollectionCallback';
     }
-
 }

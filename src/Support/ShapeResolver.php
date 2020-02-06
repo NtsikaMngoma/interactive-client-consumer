@@ -20,13 +20,14 @@ class ShapeResolver
      */
     public function resolve(string $results)
     {
-        if (! $this->isJSON($results))
-            throw new \Exception("Api result data is not a valid json!");
-
+        if (! $this->isJSON($results)) {
+            throw new \Exception('Api result data is not a valid json!');
+        }
         $results = json_decode($results);
 
-        if (! is_array($results))
+        if (! is_array($results)) {
             $results = [$results];
+        }
 
         $collection = collect($results)->map(function ($result) {
             return $this->shape::create($result);

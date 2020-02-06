@@ -28,7 +28,6 @@ class ApiConsumerMakeCommand extends GeneratorCommand
      */
     protected $type = 'ApiConsumer';
 
-
     /**
      * Execute the console command.
      *
@@ -59,7 +58,7 @@ class ApiConsumerMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\ApiConsumers\\' . $this->getNameInput();
+        return $rootNamespace.'\ApiConsumers\\'.$this->getNameInput();
     }
 
     /**
@@ -73,5 +72,4 @@ class ApiConsumerMakeCommand extends GeneratorCommand
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the consumer already exists.'],
         ];
     }
-
 }

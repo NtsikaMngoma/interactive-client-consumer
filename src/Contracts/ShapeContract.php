@@ -4,7 +4,7 @@ namespace InteractiveClient\ApiConsumer\Contracts;
 
 interface ShapeContract
 {
-    static function create($data);
+    public static function create($data);
 
     /*
     function isReturnShapeDataOnly(): bool;

@@ -17,7 +17,7 @@ abstract class BaseShape implements ShapeContract
      * @param $data
      * @return BaseShape
      */
-    static function create($data)
+    public static function create($data)
     {
         $shape = new static();
         foreach ($data as $key => $value) {
@@ -25,6 +25,7 @@ abstract class BaseShape implements ShapeContract
         }
 
         $shape->validateStructure();
+
         return $shape;
     }
 
@@ -69,7 +70,7 @@ abstract class BaseShape implements ShapeContract
         if (isset($this->transformations[$key])) {
             $key = $this->transformations[$key];
         }
-        if ($this->return_shape_data_only && !in_array($key, $this->fields)) {
+        if ($this->return_shape_data_only && ! in_array($key, $this->fields)) {
             return;
         }
 
@@ -81,42 +82,38 @@ abstract class BaseShape implements ShapeContract
      */
     public function validateStructure()
     {
-        if (!$this->require_shape_structure) {
+        if (! $this->require_shape_structure) {
             return;
         }
         foreach ($this->fields as $field) {
-            if (!isset($this->$field))  {
+            if (! isset($this->$field)) {
                 throw new \Exception("Shape is missing data field: '{$field}'");
             }
         }
     }
 
-
-
     protected function hasOne($endpoint, $field)
     {
-        $endpoint_name = explode("\\", $endpoint);
+        $endpoint_name = explode('\\', $endpoint);
         $endpoint_name = array_pop($endpoint_name);
-        $endpoint_name = str_replace("Endpoint", "", $endpoint_name);
+        $endpoint_name = str_replace('Endpoint', '', $endpoint_name);
 
-        $consumer_name = explode("\\", $endpoint);
-        $consumer_name = array_slice($consumer_name, 0, count($consumer_name) -2);
-        $consumer_name = "\\" . implode("\\", $consumer_name) . "\\" . $consumer_name[count($consumer_name) -1];
-
+        $consumer_name = explode('\\', $endpoint);
+        $consumer_name = array_slice($consumer_name, 0, count($consumer_name) - 2);
+        $consumer_name = '\\'.implode('\\', $consumer_name).'\\'.$consumer_name[count($consumer_name) - 1];
 
         return $consumer_name::$endpoint_name()->find($this->$field);
     }
 
     protected function hasMany($endpoint, $field)
     {
-        $endpoint_name = explode("\\", $endpoint);
+        $endpoint_name = explode('\\', $endpoint);
         $endpoint_name = array_pop($endpoint_name);
-        $endpoint_name = str_replace("Endpoint", "", $endpoint_name);
+        $endpoint_name = str_replace('Endpoint', '', $endpoint_name);
 
-        $consumer_name = explode("\\", $endpoint);
-        $consumer_name = array_slice($consumer_name, 0, count($consumer_name) -2);
-        $consumer_name = "\\" . implode("\\", $consumer_name) . "\\" . $consumer_name[count($consumer_name) -1];
-
+        $consumer_name = explode('\\', $endpoint);
+        $consumer_name = array_slice($consumer_name, 0, count($consumer_name) - 2);
+        $consumer_name = '\\'.implode('\\', $consumer_name).'\\'.$consumer_name[count($consumer_name) - 1];
 
         return $consumer_name::$endpoint_name()->findMany($this->$field);
     }
